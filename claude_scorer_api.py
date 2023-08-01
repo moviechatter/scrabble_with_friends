@@ -1,12 +1,15 @@
 from utils import fetch_and_clean_html
 
 import re
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from langchain.chat_models import ChatAnthropic
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
+
+ANTHROPIC_API_KEY = os.environ['ANTHROPIC_API_KEY']
 
 app = FastAPI()
 
@@ -39,7 +42,7 @@ async def webpage_summarize(link: Url):
         model="claude-2.0",
         temperature=0.0,
         top_p=0.95,
-        anthropic_api_key="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",
+        anthropic_api_key=ANTHROPIC_API_KEY
     )
 
     chain = ConversationChain(
@@ -68,7 +71,7 @@ def relevance_score(score_json: ScorePayload):
         model="claude-2.0",
         temperature=0.0,
         top_p=0.95,
-        anthropic_api_key="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",
+        anthropic_api_key=ANTHROPIC_API_KEY
     )
     should_score_prompt = f"""You are a casual Scrabble player who wants to win. You are given the following information:
 Executive Summary, Main Ideas, Themes:
